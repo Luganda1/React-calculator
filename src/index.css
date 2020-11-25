@@ -69,17 +69,27 @@ body {
   font-size: 0.875rem;
 }
 
+.btnpad {
+display: flex;
+flex: 1;
+
+width: 25%;
+flex-wrap: wrap;
+}
+
 .button-wrapper {
+  display: flexbox;
+  flex: 1;
+  flex-wrap: wrap;
+  width: 5em;
   border: none;
-  height: 4em;
-  display: flex;
+  height: 5em;
   justify-content: center;
   align-items: center;
   font-weight: lighter;
   font-size: 1.4em;
   background: var(--clr-grey-8);
   color: var(--clr-grey-1);
-  flex: 1;
   outline: .1px solid rgb(235, 231, 231);
 }
 
@@ -90,6 +100,41 @@ body {
   /* opacity: .5; */
 }
 
+.btn {
+  display: flexbox;
+  width: 7.05em;
+  flex: 1;
+  flex-wrap: wrap;
+  text-decoration: none;
+  color: var(--mainWhite);
+  background: var(--clr-grey-2);
+  text-align: center;
+  letter-spacing: 0.5px;
+  font-size: 14px;
+  outline: 1px solid hsl(213, 25%, 60%);
+  /* outline: 1px solid hsl(212, 48%, 38%); */
+  /* border-radius: 5px; */
+  border: none;
+  height: 5em;
+  /* line-height: 6em; */
+  padding: 0 16px;
+  text-transform: uppercase;
+  margin: 0 auto;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.12), 9px 7px 9px rgba(0, 0, 0, 0.24);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  /* align-items: center */
+  z-index: 10;
+}
+.btn:nth-of-type(19){
+  width: 14.06em;
+}
+.btn:hover{
+  filter: brightness(80%);
+}
+.btn:nth-of-type(19):hover{
+  filter: brightness(80%);
+}
 .operator {
   background-color: #fc8d38;
   color: #ffffff;
@@ -116,19 +161,25 @@ body {
 
 .input {
   height: 4em;
-  display: flex;
+  display: flexbox;
   justify-content: flex-end;
-  align-items: center;
+  position: relative;
+  text-align: end;
   font-weight: bold;
   font-size: 2em;
   background-color: #000000;
   color: #ffffff;
   padding: 0.5em;
-  outline: 1px solid #888888;
+  margin-right: 1px;
+  z-index: -1;
+  /* outline: 1px solid #888888; */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.12), 9px 7px 9px rgba(0, 0, 0, 0.24);
+  overflow: hidden;
 }
 
 .app {
   display: flex;
+  flex: 1;
   justify-content: center;
   align-items: center;
   height: 100vh;
@@ -137,7 +188,7 @@ body {
 
 .calc-wrapper {
   margin-top: 10em;
-  width: 400px;
+  width: 395px;
   height: 600px;
   /* box-shadow: 3px 5px 23px 0px rgb(43, 41, 41); */
 

@@ -8,7 +8,9 @@ export default function Input(props) {
         <div className="input"
         // onClick={handleDigitChild}
         >
-            {props.input}
+            <p>{props.input}</p>
+            <p>{props.result}</p>
+            
         </div>
     )
 }

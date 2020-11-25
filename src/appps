@@ -1,0 +1,412 @@
+import React, { Component } from 'react'
+import Button from "./components/Button";
+import Input from "./components/Input";
+// import ClearBtn from "./components/ClearBtn"
+import * as math from "mathjs"
+import Keypads from "./components/Keypad";
+import {buttonData} from "./components/Data"
+
+
+const operators = [ "+", "-", "*", "/"];
+
+
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      input : [],
+      result: 0,
+      // operator: "+"
+      // prevResult: []
+    }
+    this.calculate = this.calculate.bind(this);
+    this.onChange = this.onChange.bind(this);
+  }
+
+    //If i had used the traditional operators this woul apply 
+    // switchOperators = (operator) => {
+    //   switch (operator) {
+    //     case '÷':
+    //       return '/'
+    //     case 'x':
+    //       return '*'
+    //   }
+    // }
+
+    onChange({ target }) {
+      this.setState({ result: target.value });
+    }
+    calculate(prevState) {
+      try {
+        const result = (eval(this.state.result) || "") + "";
+        return {
+          result,
+          input: [...prevState.result, this.state.result + "   "],
+          prevResult: [...prevState.prevResult, +result]
+        };
+      } catch (event) {
+        return {
+          result: "error",
+          input: "error",
+          prevResult: "error"
+        };
+      }
+    }
+
+    // calculate = (num1, operator, num2) => {
+    //   let result;
+    //   // console.log("math");
+    //   // operator = operator.replace(/[x÷]/, this.switchOperators
+    //   if(!isNaN(num2)) {
+    //     result = eval(num1 + operator + num2) 
+    //     // result = (eval(num1) || "" ) + ""
+    //     this.setState({result})
+    //   }
+    // }
+
+//   handleClick = (button) => {
+//     let input = [...this.state.input]
+//     let result = this.state.result;
+//     let operator = this.state.operator;
+//     const num = parseFloat(input.join(''))
+
+//     switch(true) {
+//       case /[+-\/\*]/.test(button):
+//         // console.log(operator);
+//         this.calculate(result, operator, num)
+//         operator = button;
+//         input = operator;
+//         break
+
+//         case/\d/.test(button):
+//         // console.log(button);
+//         if(/[+-\/\*]/.test(button)){
+//             input = []
+//           }
+//           input.push(button)
+//         break
+//         case/\C/i.test(button):
+//           this.reset()
+//         break
+//         case/[CE]/i.test(button):
+//         this.backspace()
+//         break
+//         case/\./.test(button):
+//         this.handleDecimal()
+//         break
+//         default:
+//           console.log("its not gonna come thru")
+//     }
+  
+    
+//   this.setState({input, operator})
+// };
+
+
+handleClick(event) {
+  const { name, value } = event.target;
+const {input } = this.state
+
+  let result = this.state.result;
+  let lastChar = result.charAt(result.length - 1);
+  const isOperator = operators.indexOf(value) !== -1;
+  if (value === "=") {
+    this.setState(prevState => this.calculate(prevState));
+  } else if (value === "CE") {
+      this.backspace()
+  } else if (value === "C") {
+    this.reset()
+  } else if (isOperator && operators.indexOf(lastChar) !== -1) {
+    result = result.substr(0, result.length - 1) + value;
+    this.setState({ [name]: input });
+  } else {
+    this.setState({input})
+  }
+}
+
+// handleButton(e) {
+//   // consider the input of the pressed button
+//   const {inputContent: value} = e.target;
+
+//   // according to the value dispatch the appropriate functions
+//   switch(value) {
+//     case 'C':
+//       this.reset();
+//       break;
+//     case 'CE':
+//       this.backspace();
+//       break;
+//       // case/\d/.test():
+//         case '0':
+//         case '1':
+//         case '2':
+//         case '3':
+//         case '4':
+//         case '5':
+//         case '6':
+//         case '7':
+//         case '8':
+//         case '9':
+//       this.handleDigit(value);
+//       break;
+//       // case /[+-\/\*]/.test():
+//         case '+':
+//         case '-':
+//         case '*':
+//         case '/':
+//       this.handleOperator(value);
+//       break;
+//     case '=':
+//       this.calculate();
+//       break;
+//     case '.':
+//       this.handleDecimal();
+//       break;
+//     default:
+//       console.error('Technically, this should never happen.');
+//   }
+// }
+
+reset = () => {
+  this.setState({ 
+      input: "0",
+      reset: []
+  })
+};
+
+backspace = () => {
+  this.setState({
+      input: this.state.input.slice(0, -1)
+  })
+};
+
+handleDecimal = () => {
+  const { input } = this.state;
+  // ! add the point only if no point is already included
+  if(!/\./.test(input)) {
+    this.setState({input: `${input}.`})
+  }
+}
+
+
+
+handleDigit = (digit) => {
+  const {result} = this.state;
+  // ! add the digit only if the result display is different from '0'
+  // this to avoid leading 0s
+  this.setState({
+    result: result !== '0' ? `${result}${digit}` : digit,
+  })
+}
+
+
+
+// handleOperator(operator) {
+//   const { result, input } = this.state;
+
+
+//   // case /[+-\/\*]/.test(button):
+//   //   // console.log(operator);
+//   //   this.calculate(num, operator, result)
+//   //   operator = button;
+//   //   input = operator;
+//   //   break
+//   // if result already displays an operator, consider the position of the operator itself
+//   if(/[+\-*/]/.test(result)) {
+//     // the operator is the last figure --> substitute with the new operator
+//     if(/[+\-*/]/.test(result[result.length -1])) {
+//       // ! do not substitute the operator, but append the value, if the value is the minus sign and there's no preceding minus sign
+//       if(operator !== '-') {
+//         this.setState({
+//           result: operator,
+//         })
+//       } else if(!/\-/.test(result)) {
+//         this.setState({
+//           result: `${result}${operator}`
+//         })
+//       }
+//     } else {
+//       // the existing operator is followed by numbers: compute te input and include the operator in the result display
+//       this.setState({
+//         result: operator,
+//         input: Math.round(eval(`${input}${result}`) * 10000) / 10000,
+//       })
+//     }
+//   } else {
+//     // there is no operator: add the operator to the result display whilst moving the existing expression to the input
+//     this.setState({
+//       result: operator,
+//       input: result,
+//     })
+//   }
+// }
+
+
+
+
+  render() {
+    return (
+      <div className="app">
+      <div className="calc-wrapper">
+          <h2>Tony's Calculator</h2>
+          <div id="display" >
+          <Input input={this.state.input}
+          result={this.state.result}
+          onChange={this.onChange}
+           />
+          </div>
+          {/* <Button handleButton={this.handleButton} /> */}
+          {/* <Keypads onClick={this.onClick}/> */}
+          {buttonData.map((item) => {
+            let name = item.button;
+            let id = item.id;
+          return <Button value={name} handleClick={this.handleClick} key={id} name={name} id={id}/>
+          } )
+          } 
+      </div>
+  </div>
+    )
+
+
+
+
+
+
+
+
+
+/*
+
+  
+  onClick = button => {
+    // const {name, value} = button.target;
+    
+    var input = this.state.input;
+    let lastChar = input.charAt(input.length - 1);
+    const isOperator = operators.indexOf(button) !== -1
+
+    if(button === "="){
+        this.calculate()
+    }
+
+    else if(button === "C"){
+        this.reset()
+    }
+    else if(button === "CE"){
+        this.backspace()
+    }
+
+    else if (isOperator && operators.indexOf(lastChar) !== -1) {
+      input = input.substr(0, input.length - 1) + button;
+      this.setState({input: this.state.input})
+    }
+
+    else {
+        this.setState({
+            input: this.state.input + button
+        })
+    }
+};
+
+
+calculate = (prevState) => {
+    try {
+      // const input = (eval(this.state.input) || "" ) + ""
+        this.setState({
+            // eslint-disable-next-line
+            // input: (eval(this.state.input) || "" ) + "",
+            input:  Math.round(eval(this.state.input) * 10000) / 10000,
+            // result: [...prevState.result, this.state.input + "  "],
+            // prevResult: [...prevState.prevResult, + input]
+        })
+    } catch (error) {
+      console.log(error);
+        this.setState({
+            input: "error",
+            // result: "error",
+            // prevResult: "error"
+        })
+
+    }
+};
+
+reset = () => {
+    this.setState({ 
+        input: "0",
+        reset: []
+    })
+};
+
+backspace = () => {
+    this.setState({
+        input: this.state.input.slice(0, -1)
+    })
+};
+
+
+// handleDigit(digit) {
+//   const { input } = this.state;
+//   // ! add the digit only if the input display is different from '0'
+//   // this to avoid leading 0s
+//   this.setState({
+//     input: input !== '0' ? `${input}${digit}` : digit,
+//   })
+// }
+
+
+
+  
+  render() {
+
+    return (
+      <div className="app">
+      <div className="calc-wrapper">
+          <h2>Tony's Calculator</h2>
+          <div id="display" >
+          <Input input={this.state.input} />
+          </div>
+          <Keypads onClick={this.onClick}/>
+      </div>
+  </div>
+    )
+*/
+    // return (
+    //   <div className="app">
+    //     <div className="calc-wrapper">
+    //       <Input input={this.state.input} />
+    //         <div className="row">
+    //           <Button handClick={this.handleClick}>7</Button> 
+    //           <Button handClick={this.handleClick}>8</Button> 
+    //           <Button handClick={this.handleClick}>9</Button> 
+    //           <Button handClick={this.handleClick}>/</Button> 
+    //         </div>
+    //         <div className="row">
+    //           <Button handClick={this.handleClick}>4</Button> 
+    //           <Button handClick={this.handleClick}>5</Button> 
+    //           <Button handClick={this.handleClick}>6</Button> 
+    //           <Button handClick={this.handleClick}>X</Button> 
+    //         </div>
+    //         <div className="row">
+    //           <Button handClick={this.handleClick}>1</Button> 
+    //           <Button handClick={this.handleClick}>2</Button> 
+    //           <Button handClick={this.handleClick}>3</Button> 
+    //           <Button handClick={this.handleClick}>-</Button> 
+    //         </div>
+    //         <div className="row">
+    //           <Button handClick={this.backspace}>CE</Button> 
+    //           <Button handClick={this.handleClick}>0</Button> 
+    //           <Button handClick={this.handleClick}>.</Button> 
+    //           <Button handClick={this.handleClick}>+</Button> 
+    //         </div>
+    //         <div className="row">
+    //         <ClearBtn handClear={() => this.setState({input: ""})} >Clear</ClearBtn>
+    //         <Button handleClick={this.handleEqual}>=</Button>
+    //         </div>
+    //     </div>
+    //   </div>
+    // )
+  }
+}
+
+
+export default App;
