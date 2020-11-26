@@ -5,7 +5,7 @@ export  const buttonData = [
     id: "backspace"},
     {button: "%",
     id: "modulus"},
-    { button: "/",
+    { button: "÷",
     id: "divide"},
     { button: "8",
     id: "eight"} ,
@@ -13,7 +13,7 @@ export  const buttonData = [
     id: "seven"} ,
     {button: "9",
     id: "nine" },
-    { button: "*",
+    { button: "x",
     id: "multiply"} ,
     {button: "4",
     id: "four"} ,
@@ -38,3 +38,4 @@ export  const buttonData = [
     {button: "=",
     id: "equals"} ,
 ]
+

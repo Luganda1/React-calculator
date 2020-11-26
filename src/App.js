@@ -13,8 +13,19 @@ class App extends Component {
             operator: "+"
         }
     }
+
+    switchOperators = (operator) => {
+        switch (operator) {
+        case '÷':
+            return '/'
+        case 'x':
+            return '*'
+        }
+    }
+
     calculate = (num1, operator, num2) => {
         let result;
+        operator = operator.replace(/[x÷]/, this.switchOperators);
         // console.log("math");
         if(!isNaN(num2)) {
         result = eval(num1 + operator + num2) 
@@ -29,7 +40,7 @@ class App extends Component {
     const num = parseFloat(input.join(''))
 
     switch(true) {
-        case /[+-\/\*]/.test(button):
+        case /[+x\-÷]/.test(button):
         // console.log(operator);
         this.calculate(result, operator, num)
         operator = button;
@@ -38,7 +49,7 @@ class App extends Component {
 
         case/\d/.test(button):
         // console.log(button);
-        if(/[+-\/\*]/.test(button)){
+        if(/[+x\-÷]/.test(button)){
             input = []
             }
             input.push(button)
@@ -57,11 +68,10 @@ class App extends Component {
     else if(button === "."){
         this.handleDecimal()
     }
+
     this.setState({input, operator})
 };
 
-
-    
     reset = () => {
         this.setState({ 
             input: "0",
@@ -92,18 +102,18 @@ class App extends Component {
             <h2>Tony's Calculator</h2>
             <div id="display" >
             <Input input={this.state.input}
-            result={this.state.result}
+                    result={this.state.result}
             />
             </div>
             {buttonData.map((item) => {
                 let name = item.button;
                 let id = item.id;
             return <Button 
-            key={id} 
-            name={name} 
-            id={id}
-            value={name} 
-            handleClick={this.handleClick} 
+                key={id} 
+                name={name} 
+                id={id}
+                value={name} 
+                handleClick={this.handleClick} 
             />
             } )
             } 
