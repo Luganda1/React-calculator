@@ -1,7 +1,7 @@
 import React from 'react'
 
 const isOperator = val => {
-    return !isNaN(val) || val == "." 
+    return !isNaN(val) || val === "." 
     // || val == "=" || val == "CE"
 }
 

@@ -14,21 +14,21 @@ class App extends Component {
         }
     }
 
-    switchOperators = (operator) => {
-        switch (operator) {
-        case '÷':
-            return '/'
-        case 'x':
-            return '*'
-        }
-    }
+    // switchOperators = (operator) => {
+    //     switch (operator) {
+    //     case '÷':
+    //         return '/'
+    //     case 'x':
+    //         return '*'
+    //     }
+    // }
 
     calculate = (num1, operator, num2) => {
         let result;
-        operator = operator.replace(/[x÷]/, this.switchOperators);
+        // operator = operator.replace(/[x÷]/, this.switchOperators);
         // console.log("math");
         if(!isNaN(num2)) {
-        result = eval(num1 + operator + num2) 
+        result = eval(num1 + operator + num2)
         this.setState({result})
         }
     }
@@ -40,29 +40,35 @@ class App extends Component {
     const num = parseFloat(input.join(''))
 
     switch(true) {
-        case /[+x\-÷]/.test(button):
+        // case /[+x\-÷]/.test(button):
+        case /[+*-/]/.test(button):
         // console.log(operator);
         this.calculate(result, operator, num)
-        operator = button;
-        input = operator;
+        operator = button
+        input = operator
         break
 
         case/\d/.test(button):
         // console.log(button);
-        if(/[+x\-÷]/.test(button)){
+        if(/[+*-/]/.test(button)){
             input = []
             }
             input.push(button)
         break
+        default:
+            console.error("error")
     }
     
     if(button === "="){
         this.calculate(result, operator, num)
+        input = operator
     }
     else if(button === "C"){
+        // console.log(button);
         this.reset()
     }
     else if(button === "CE"){
+        // console.log(button);
         this.backspace()
     }
     else if(button === "."){
@@ -124,3 +130,6 @@ class App extends Component {
 }
 
 export default App;
+
+
+
